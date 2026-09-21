@@ -24,9 +24,7 @@ void insert(Node*& root, int value) {
         root = new Node(value);
         return;
     }
-
     Node* current = root;
-    
     // Walk down the tree to find the correct empty leaf
     while (true) {
         if (value < current->val) {
@@ -35,8 +33,7 @@ void insert(Node*& root, int value) {
                 current->left = new Node(value);
                 break; 
             }
-            current = current->left;
-            
+            current = current->left;           
         } else {
             // RULE 2: Greater or equal values go RIGHT
             if (current->right == nullptr) {
@@ -54,15 +51,10 @@ Node* find(Node* root, int x) {
 
     // Traverse downwards like a standard binary search
     while (current != nullptr) {
-        if (current->val == x) {
-            return current;     // Target found!
-        } else if (x < current->val) {
-            current = current->left;  // Search left
-        } else {
-            current = current->right; // Search right
-        }
+        if (current->val == x) return current;     // Target found!
+        else if (x < current->val) current = current->left;  // Search left
+        else current = current->right; // Search right
     }
-
     return nullptr; // Dead end, value does not exist
 }
 
@@ -71,13 +63,10 @@ void preorder(Node* root) {
     if (root == nullptr) {
         return;
     }
-
     // Step 1: Process the current NODE
     cout << root->val << " ";
-
     // Step 2: Recursively traverse the LEFT branch
     preorder(root->left);
-
     // Step 3: Recursively traverse the RIGHT branch
     preorder(root->right);
 }
@@ -106,6 +95,5 @@ int main() {
         preorder(targetNode);
         cout << "\n";
     }
-
     return 0;
 }
