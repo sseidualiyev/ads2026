@@ -29,8 +29,6 @@ int main() {
     int n, k;
     cin >> n >> k;
 
-    if (n <= 0) return 0;
-
     string x;
     cin >> x;
 
