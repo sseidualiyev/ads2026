@@ -31,48 +31,39 @@ struct Node {
 };
 
 int main() {
-    int n, val;
-    if (!(cin >> n) || n <= 0) return 0;
+    int n;
+    cin >> n;
 
-    // PHASE 1: Build the linked list
-    cin >> val;
-    Node* head = new Node(val);
-    Node* tail = head;
+    Node* head = nullptr;
+    Node* tail = nullptr;
 
-    for (int i = 1; i < n; i++) {
-        cin >> val;
-        tail->next = new Node(val);
-        tail = tail->next;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+
+        Node* node = new Node(x);
+
+        if (!head)
+            head = tail = node;
+        else {
+            tail->next = node;
+            tail = node;
+        }
     }
 
-    // PHASE 2: Core Logic - Delete the middle node
-    if (n == 1) {
-        delete head; // Fix memory leak from original code
-        cout << "\n";
-        return 0;
-    }
+    if (n == 1) return 0;
 
     Node* curr = head;
-    int steps = (n / 2) - 1; // Calculate exactly how many steps to the node BEFORE the middle
 
-    for (int i = 0; i < steps; i++) {
+    for (int i = 0; i < n / 2 - 1; i++)
         curr = curr->next;
+
+    Node* temp = curr->next;
+    curr->next = temp->next;
+    delete temp;
+
+    while (head) {
+        cout << head->val << ' ';
+        head = head->next;
     }
-
-    Node* temp = curr->next; // 1. Identify the middle node
-    curr->next = temp->next; // 2. Bypass it
-    delete temp;             // 3. Free the memory
-
-    // PHASE 3: Print and clean up memory
-    curr = head;
-    while (curr != nullptr) {
-        cout << curr->val << (curr->next ? " " : "");
-        
-        Node* temp = curr;
-        curr = curr->next;
-        delete temp; // Free the remaining nodes as we print them
-    }
-    cout << "\n";
-
-    return 0;
 }
