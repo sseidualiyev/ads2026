@@ -30,44 +30,46 @@ struct Node {
 };
 
 int main() {
-    int n, m, val;
-
-    // PHASE 1: Build List A
+    int n, m, x;
     cin >> n;
-    Node* headA = nullptr;
-    Node* tailA = nullptr;
-    if (n > 0) {
-        cin >> val;
-        headA = tailA = new Node(val);
-        for (int i = 1; i < n; i++) {
-            cin >> val;
-            tailA->next = new Node(val);
-            tailA = tailA->next;
+
+    Node *headA = nullptr, *tailA = nullptr;
+
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        Node* node = new Node(x);
+
+        if (!headA)
+            headA = tailA = node;
+        else {
+            tailA->next = node;
+            tailA = node;
         }
     }
 
-    // PHASE 1.5: Build List B
     cin >> m;
-    Node* headB = nullptr;
-    Node* tailB = nullptr;
-    if (m > 0) {
-        cin >> val;
-        headB = tailB = new Node(val);
-        for (int i = 1; i < m; i++) {
-            cin >> val;
-            tailB->next = new Node(val);
-            tailB = tailB->next;
+
+    Node *headB = nullptr, *tailB = nullptr;
+
+    for (int i = 0; i < m; i++) {
+        cin >> x;
+        Node* node = new Node(x);
+
+        if (!headB)
+            headB = tailB = node;
+        else {
+            tailB->next = node;
+            tailB = node;
         }
     }
 
-    // PHASE 2: Core Logic - Merge the two lists
-    Node dummy(0);         // The "dummy node" trick simplifies the logic
-    Node* tail = &dummy;   // 'tail' will build the new merged list
+    Node dummy(0);
+    Node* tail = &dummy;
+
     Node* a = headA;
     Node* b = headB;
 
-    // Compare and attach the smaller node
-    while (a != nullptr && b != nullptr) {
+    while (a && b) {
         if (a->val <= b->val) {
             tail->next = a;
             a = a->next;
@@ -75,22 +77,14 @@ int main() {
             tail->next = b;
             b = b->next;
         }
-        tail = tail->next; // Advance the tail pointer
+
+        tail = tail->next;
     }
 
-    // Attach whatever is left over (one of them will be nullptr)
-    tail->next = (a != nullptr) ? a : b;
+    tail->next = a ? a : b;
 
-    // PHASE 3: Print and clean up memory
-    Node* curr = dummy.next; // The real merged list starts after the dummy node
-    while (curr != nullptr) {
-        cout << curr->val << (curr->next ? " " : "");
-        
-        Node* temp = curr;
-        curr = curr->next;
-        delete temp; // Free memory as we go
+    while (dummy.next) {
+        cout << dummy.next->val << ' ';
+        dummy.next = dummy.next->next;
     }
-    cout << "\n";
-
-    return 0;
 }
