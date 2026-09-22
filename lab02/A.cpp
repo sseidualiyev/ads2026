@@ -49,7 +49,8 @@ void solve() {
         while (p < history.size() && cnt[history[p] - 'a'] > 1)
             p++;
 
-        cout << (p < history.size() ? history[p] : '-') << " ";
+        if (p < history.size()) cout << history[p] << ' ';
+        else cout << "-1" << ' ';
     }
 
     cout << '\n';
