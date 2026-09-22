@@ -1,5 +1,5 @@
 /*
-
+Problem F: Triangle search binary tree. Need to find the smallest triangle (node with both children )
 */
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
