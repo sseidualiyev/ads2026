@@ -18,26 +18,20 @@ struct Node {
 };
 
 Node* insert(Node* root, int value) {
-    if (root == nullptr)
-        return new Node(value);
+    if (root == nullptr) return new Node(value);
 
-    if (value < root->val)
-        root->left = insert(root->left, value);
-    else
-        root->right = insert(root->right, value);
+    if (value < root->val) root->left = insert(root->left, value);
+    else root->right = insert(root->right, value);
 
     return root;
 }
 
 int countLeaves(Node* root) {
-    if (root == nullptr)
-        return 0;
+    if (root == nullptr) return 0;
 
-    if (root->left == nullptr && root->right == nullptr)
-        return 1;
+    if (root->left == nullptr && root->right == nullptr) return 1;
 
-    return countLeaves(root->left) +
-           countLeaves(root->right);
+    return countLeaves(root->left) + countLeaves(root->right);
 }
 
 int main() {
