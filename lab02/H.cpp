@@ -29,7 +29,7 @@ In the third example the best run is 5+3+9-5+10+10 = 32.
 */
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
-#include <algorithm> // Required for std::max
+#include <algorithm>
 using namespace std;
 
 struct Node {
@@ -39,44 +39,31 @@ struct Node {
 };
 
 int main() {
-    int n, val;
-    if (!(cin >> n) || n <= 0) return 0;
+    int n;
+    cin >> n;
 
-    // PHASE 1: Build the linked list
-    cin >> val;
-    Node* head = new Node(val);
+    int x;
+    cin >> x;
+
+    Node* head = new Node(x);
     Node* tail = head;
 
     for (int i = 1; i < n; i++) {
-        cin >> val;
-        tail->next = new Node(val);
+        cin >> x;
+        tail->next = new Node(x);
         tail = tail->next;
     }
 
-    // PHASE 2: Core Logic - Kadane's Algorithm
     int currSum = head->val;
     int maxSum = head->val;
+
     Node* curr = head->next;
 
-    while (curr != nullptr) {
-        // 1. Should we add to the existing sum, or start fresh from the current node?
-        currSum = max(curr->val, currSum + curr->val); 
-        
-        // 2. Is this new sum the biggest we've seen so far?
-        maxSum = max(maxSum, currSum);                 
-        
+    while (curr) {
+        currSum = max(curr->val, currSum + curr->val);
+        maxSum = max(maxSum, currSum);
         curr = curr->next;
     }
 
-    // PHASE 3: Print result and clean up memory
-    cout << maxSum << "\n";
-
-    curr = head;
-    while (curr != nullptr) {
-        Node* temp = curr;
-        curr = curr->next;
-        delete temp; // Free memory to prevent leaks
-    }
-
-    return 0;
+    cout << maxSum << '\n';
 }
