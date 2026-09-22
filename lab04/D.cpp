@@ -47,7 +47,7 @@ void insert(Node*& root, int value) {
 
 int main() {
     int n;
-    if (!(cin >> n)) return 0;
+    cin >> n;
 
     Node* root = nullptr;
 
