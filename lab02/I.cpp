@@ -57,101 +57,114 @@ struct Node {
     string title;
     Node* next;
     Node* prev;
-    Node(string t) : title(t), next(nullptr), prev(nullptr) {}
+
+    Node(string x) : title(x), next(nullptr), prev(nullptr) {}
 };
 
 int main() {
     Node* head = nullptr;
     Node* tail = nullptr;
+
     string cmd, title;
 
     while (cin >> cmd) {
-        
-        // --- ADD OPERATIONS (Symmetrical) ---
+
         if (cmd == "add_front") {
             cin >> title;
-            Node* newNode = new Node(title);
-            if (head == nullptr) {
-                head = tail = newNode; // First node
+
+            Node* node = new Node(title);
+
+            if (!head) {
+                head = tail = node;
             } else {
-                newNode->next = head;
-                head->prev = newNode;
-                head = newNode;
+                node->next = head;
+                head->prev = node;
+                head = node;
             }
+
             cout << "ok\n";
-        } 
+        }
+
         else if (cmd == "add_back") {
             cin >> title;
-            Node* newNode = new Node(title);
-            if (tail == nullptr) {
-                head = tail = newNode; // First node
+
+            Node* node = new Node(title);
+
+            if (!tail) {
+                head = tail = node;
             } else {
-                newNode->prev = tail;
-                tail->next = newNode;
-                tail = newNode;
+                node->prev = tail;
+                tail->next = node;
+                tail = node;
             }
+
             cout << "ok\n";
-        } 
-        
-        // --- ERASE OPERATIONS (Symmetrical) ---
+        }
+
         else if (cmd == "erase_front") {
-            if (head == nullptr) {
+            if (!head) {
                 cout << "error\n";
             } else {
                 Node* temp = head;
-                cout << temp->title << "\n";
+                cout << temp->title << '\n';
+
                 head = head->next;
-                
-                if (head != nullptr) head->prev = nullptr;
-                else tail = nullptr; // If list became empty
-                
+
+                if (head)
+                    head->prev = nullptr;
+                else
+                    tail = nullptr;
+
                 delete temp;
             }
-        } 
+        }
+
         else if (cmd == "erase_back") {
-            if (tail == nullptr) {
+            if (!tail) {
                 cout << "error\n";
             } else {
                 Node* temp = tail;
-                cout << temp->title << "\n";
+                cout << temp->title << '\n';
+
                 tail = tail->prev;
-                
-                if (tail != nullptr) tail->next = nullptr;
-                else head = nullptr; // If list became empty
-                
+
+                if (tail)
+                    tail->next = nullptr;
+                else
+                    head = nullptr;
+
                 delete temp;
             }
-        } 
-        
-        // --- PEEK OPERATIONS ---
+        }
+
         else if (cmd == "front") {
-            cout << (head != nullptr ? head->title : "error") << "\n";
-        } 
+            if (head)
+                cout << head->title << '\n';
+            else
+                cout << "error\n";
+        }
+
         else if (cmd == "back") {
-            cout << (tail != nullptr ? tail->title : "error") << "\n";
-        } 
-        
-        // --- UTILITY OPERATIONS ---
+            if (tail)
+                cout << tail->title << '\n';
+            else
+                cout << "error\n";
+        }
+
         else if (cmd == "clear") {
-            while (head != nullptr) {
+            while (head) {
                 Node* temp = head;
                 head = head->next;
                 delete temp;
             }
+
             tail = nullptr;
             cout << "ok\n";
-        } 
+        }
+
         else if (cmd == "exit") {
             cout << "goodbye\n";
-            
-            // Clean up any remaining memory before exiting
-            while (head != nullptr) {
-                Node* temp = head;
-                head = head->next;
-                delete temp;
-            }
             break;
         }
     }
-    return 0;
 }
