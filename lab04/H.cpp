@@ -48,9 +48,9 @@ void inorder(Node* root) {
     if (root == nullptr)
         return;
 
-    inorder(root->left);
-    cout << root->val << " ";
     inorder(root->right);
+    cout << root->val << " ";
+    inorder(root->left);
 }
 
 int main() {
