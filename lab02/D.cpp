@@ -27,8 +27,6 @@ int main() {
     int n, x;
     cin >> n;
 
-    if (n <= 0) return 0;
-
     cin >> x;
     Node* head = new Node(x);
     Node* tail = head;
