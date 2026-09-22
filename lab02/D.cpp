@@ -24,42 +24,35 @@ struct Node {
 };
 
 int main() {
-    int n, val;
-    if (!(cin >> n) || n <= 0) return 0;
+    int n, x;
+    cin >> n;
 
-    // PHASE 1: Build the linked list
-    cin >> val;
-    Node* head = new Node(val);
+    if (n <= 0) return 0;
+
+    cin >> x;
+    Node* head = new Node(x);
     Node* tail = head;
 
     for (int i = 1; i < n; i++) {
-        cin >> val;
-        tail->next = new Node(val);
+        cin >> x;
+        tail->next = new Node(x);
         tail = tail->next;
     }
 
-    // PHASE 2: Core Logic - Reverse the linked list
     Node* prev = nullptr;
     Node* curr = head;
 
-    while (curr != nullptr) {
-        Node* nextNode = curr->next; // 1. Save the next node so we don't lose the chain
-        curr->next = prev;           // 2. Reverse the current node's pointer backwards
-        prev = curr;                 // 3. Move 'prev' one step forward
-        curr = nextNode;             // 4. Move 'curr' one step forward
+    while (curr) {
+        Node* next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
     }
-    head = prev; // Update head to the last node processed
 
-    // PHASE 3: Print and clean up memory
-    curr = head;
-    while (curr != nullptr) {
-        cout << curr->val << (curr->next ? " " : "");
-        
-        Node* temp = curr;
-        curr = curr->next;
-        delete temp; // Free memory as we go
+    head = prev;
+
+    while (head) {
+        cout << head->val << ' ';
+        head = head->next;
     }
-    cout << "\n";
-
-    return 0;
 }
