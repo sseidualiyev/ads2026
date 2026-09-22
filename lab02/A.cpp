@@ -27,42 +27,36 @@ a -1 c
 #include <iostream>
 #include <vector>
 #include <string>
-
 using namespace std;
 
 void solve() {
     int n;
     cin >> n;
 
-    vector<int> count(26,0);
-    string history = "";
-    int unique_index = 0;
+    vector<int> cnt(26);
+    string history;
+    int p = 0;
 
-    for (int i; i < n; ++i) {
-        char ch;
-        cin >> ch; 
-        count[ch - 'a']++;
+    for (int i = 0; i < n; i++) {
+        char c;
+        cin >> c;
 
-        if (count[ch - 'a'] == 1) {
-            history += ch;
-        }
-        
-        while (unique_index < history.length() && count[history[unique_index] - 'a'] > 1) {
-            unique_index++;
-        }
-        if (unique_index < history.length()) {
-            cout << history[unique_index] << (i == n - 1 ? "" : " ");
-        } else {
-            cout << "-1" << (i == n - 1 ? "" : " ");
-        }
+        cnt[c - 'a']++;
+
+        if (cnt[c - 'a'] == 1)
+            history += c;
+
+        while (p < history.size() && cnt[history[p] - 'a'] > 1)
+            p++;
+
+        cout << (p < history.size() ? history[p] : '-') << " ";
     }
-    cout << "\n";
+
+    cout << '\n';
 }
+
 int main() {
     int t;
     cin >> t;
-    while(t--) {
-        solve();
-    }
-    return 0;
+    while (t--) solve();
 }
