@@ -15,17 +15,13 @@ Output
 #include <algorithm>
 using namespace std;
 
-// Helper: Checks if it is possible to finish all bags at a speed of 'k' per hour
 bool canFinish(const vector<long long>& bags, long long h, long long k) {
     long long hoursNeeded = 0;
 
     for (long long amount : bags) {
-        // Integer ceiling division trick: ceil(amount / k)
         hoursNeeded += (amount + k - 1) / k; 
 
-        if (hoursNeeded > h) {
-            return false; // Too slow, exit early
-        }
+        if (hoursNeeded > h) return false; 
     }
     return true;
 }
@@ -33,30 +29,20 @@ bool canFinish(const vector<long long>& bags, long long h, long long k) {
 int main() {
     int n;
     long long h;
-    if (!(cin >> n >> h)) return 0;
+    cin >> n >> h;
 
-    // PHASE 1: Read inputs
     vector<long long> bags(n);
-    for (int i = 0; i < n; i++) {
-        cin >> bags[i];
-    }
+    for (int i = 0; i < n; i++) cin >> bags[i];
 
-    // PHASE 2: Core Logic - Binary Search on the Answer
     long long left = 1; 
-    long long right = *max_element(bags.begin(), bags.end()); // Max speed needed is eating the biggest bag in 1 hour
+    long long right = *max_element(bags.begin(), bags.end()); 
 
     while (left < right) {
         long long mid = left + (right - left) / 2;
 
-        if (canFinish(bags, h, mid)) {
-            right = mid;    // 'mid' works, but let's see if we can do it slower
-        } else {
-            left = mid + 1; // 'mid' is too slow, we MUST go faster
-        }
+        if (canFinish(bags, h, mid)) right = mid;
+        else left = mid + 1; 
     }
-
-    // PHASE 3: Print result
-    cout << left << '\n'; // 'left' and 'right' converge on the absolute minimum valid speed
-
+    cout << left << '\n'; 
     return 0;
 }
