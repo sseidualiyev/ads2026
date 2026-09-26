@@ -30,30 +30,24 @@ Output
 #include <vector>
 using namespace std;
 
-// Helper: Custom Binary Search (equivalent to std::lower_bound)
-int findBucket(const vector<int>& prefixSums, int target) {
+int findBucket(const vector<int>& prefixsums, int target) {
     int left = 0;
-    int right = prefixSums.size() - 1;
+    int right = prefixsums.size() - 1;
 
     while (left < right) {
-        int mid = left + (right - left) / 2; // Safe middle calculation
+        int mid = left + (right - left) / 2;
 
-        if (prefixSums[mid] >= target) {
-            right = mid;     // Target is in the left half (or IS mid)
-        } else {
-            left = mid + 1;  // Target is strictly in the right half
-        }
+        if (prefixSums[mid] >= target) right = mid;
+        else left = mid + 1;
     }
     
-    // Return 1-based index (since problem asks for 1st bucket, 2nd bucket, etc.)
     return left + 1; 
 }
 
 int main() {
     int n, m;
-    if (!(cin >> n) || n <= 0) return 0;
+    cin >> n;
 
-    // PHASE 1: Build the Prefix Sum Array
     vector<int> prefixSums(n);
     int currentSum = 0;
     
@@ -61,17 +55,14 @@ int main() {
         int size;
         cin >> size;
         currentSum += size;
-        prefixSums[i] = currentSum; // Store cumulative total
+        prefixSums[i] = currentSum;
     }
 
-    // PHASE 2: Process the queries
-    if (cin >> m) {
-        for (int i = 0; i < m; i++) {
-            int query;
-            cin >> query;
-            cout << findBucket(prefixSums, query) << "\n";
+    cin >> m;
+    for (int i = 0; i < m; i++) {
+        int query;
+        cin >> query;
+        cout << findBucket(prefixSums, query) << "\n";
         }
-    }
-
     return 0;
 }
