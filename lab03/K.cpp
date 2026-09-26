@@ -20,24 +20,19 @@ Output
 #include <vector>
 using namespace std;
 
-// Helper: Binary searches a row that might be sorted ascending OR descending
 int searchRow(const vector<long long>& row, long long target, bool isIncreasing) {
     int left = 0;
     int right = row.size() - 1;
 
     while (left <= right) {
-        int mid = left + (right - left) / 2; // Safe middle calculation
+        int mid = left + (right - left) / 2; 
 
-        if (row[mid] == target) {
-            return mid; 
-        }
+        if (row[mid] == target) return mid; 
 
-        // Adjust pointers based on the row's sorting direction
         if (isIncreasing) {
             if (row[mid] < target) left = mid + 1;
             else right = mid - 1;
         } else {
-            // For a decreasing row, the pointer movement is exactly mirrored
             if (row[mid] > target) left = mid + 1;
             else right = mid - 1;
         }
@@ -47,28 +42,20 @@ int searchRow(const vector<long long>& row, long long target, bool isIncreasing)
 
 int main() {
     int q, n, m;
-    if (!(cin >> q)) return 0;
+    cin >> q;
 
-    // PHASE 1: Read queries
     vector<long long> queries(q);
-    for (int i = 0; i < q; i++) {
-        cin >> queries[i];
-    }
+    for (int i = 0; i < q; i++) cin >> queries[i];
 
-    // PHASE 2: Read the alternating 2D Matrix
     cin >> n >> m;
     vector<vector<long long>> matrix(n, vector<long long>(m));
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            cin >> matrix[i][j];
-        }
+        for (int j = 0; j < m; j++) cin >> matrix[i][j];
     }
 
-    // PHASE 3: Process each query
     for (long long target : queries) {
         bool found = false;
 
-        // Search row by row
         for (int i = 0; i < n; i++) {
             bool isIncreasing = (i % 2 == 1); 
 
@@ -77,13 +64,11 @@ int main() {
             if (col != -1) {
                 cout << i << " " << col << '\n';
                 found = true;
-                break; // Target found, stop searching the remaining rows
+                break; 
             }
         }
 
-        if (!found) {
-            cout << -1 << '\n';
-        }
+        if (!found) cout << -1 << '\n';
     }
 
     return 0;
