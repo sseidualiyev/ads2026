@@ -10,9 +10,7 @@ Number of elements between bounds queries
 using namespace std;
 
 int countRange(const vector<int>& a, int l, int r) {
-    if (l > r) {
-        return 0;
-    }
+    if (l > r) return 0;
 
     auto left = lower_bound(a.begin(), a.end(), l);
     auto right = upper_bound(a.begin(), a.end(), r);
@@ -26,30 +24,22 @@ int main() {
 
     vector<int> a(n);
 
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
-    }
+    for (int i = 0; i < n; i++) cin >> a[i];
 
-    // Sort the array for binary search
     sort(a.begin(), a.end());
 
     while (q--) {
         int l1, r1, l2, r2;
         cin >> l1 >> r1 >> l2 >> r2;
 
-        // Count elements in both segments
-        int answer = countRange(a, l1, r1)
-                   + countRange(a, l2, r2);
+        int answer = countRange(a, l1, r1) + countRange(a, l2, r2);
 
-        // Find intersection of the two segments
         int overlapLeft = max(l1, l2);
         int overlapRight = min(r1, r2);
 
-        // Remove elements counted twice
         answer -= countRange(a, overlapLeft, overlapRight);
 
         cout << answer << '\n';
     }
-
     return 0;
 }
