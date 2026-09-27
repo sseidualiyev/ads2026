@@ -16,46 +16,34 @@ Output
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 int main() {
     int n;
     long long k;
     cin >> n >> k;
-
-    vector<long long> prefix(n + 1, 0);
+    vector<long long> p(n + 1);
     for (int i = 0; i < n; i++) {
-        long long val;
-        cin >> val;
-        prefix[i + 1] = prefix[i] + val; 
+        long long x;
+        cin >> x;
+        p[i + 1] = p[i] + x;
     }
-
-    int minLength = n + 1;
-
-    for (int start = 0; start < n; start++) {
-        int low = start;
-        int high = n - 1;
-        int bestEnd = -1;
-
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-
-            long long currentSum = prefix[mid + 1] - prefix[start];
-
-            if (currentSum >= k) {
-                bestEnd = mid;
-                high = mid - 1;
-            } else low = mid + 1;
+    int ans = n + 1;
+    for (int s = 0; s < n; s++) {
+        int l = s, r = n - 1, e = -1;
+        
+        while (l <= r) {
+            int m = (l + r) / 2;
+            
+            if (p[m + 1] - p[s] >= k) {
+                e = m;
+                r = m - 1;
+            } else l = m + 1;
         }
-
-        if (bestEnd != -1) {
-            int length = bestEnd - start + 1;
-            minLength = min(minLength, length);
+        if (e != -1) {
+            int len = e - s + 1;
+            if (len < ans) ans = len;
         }
     }
-
-    if (minLength == n + 1) cout << 0 << '\n';
-    else cout << minLength << '\n';
-    return 0;
+    cout << (ans == n + 1 ? 0 : ans) << '\n';
 }
