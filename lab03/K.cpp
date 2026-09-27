@@ -21,11 +21,10 @@ Output
 using namespace std;
 
 int searchRow(const vector<long long>& row, long long target, bool isIncreasing) {
-    int left = 0;
-    int right = row.size() - 1;
+    int left = 0, right = row.size() - 1;
 
     while (left <= right) {
-        int mid = left + (right - left) / 2; 
+        int mid = (right + left) / 2; 
 
         if (row[mid] == target) return mid; 
 
