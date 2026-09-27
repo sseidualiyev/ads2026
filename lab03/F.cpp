@@ -9,19 +9,16 @@ Input
 Output
 4
 */
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 bool canFinish(const vector<long long>& bags, long long h, long long k) {
-    long long hoursNeeded = 0;
-
-    for (long long amount : bags) {
-        hoursNeeded += (amount + k - 1) / k; 
-
-        if (hoursNeeded > h) return false; 
+    long long hours = 0;
+    for (long long x : bags) {
+        hours += (x + k - 1) / k;
+        if (hours > h) return false;
     }
     return true;
 }
@@ -30,19 +27,17 @@ int main() {
     int n;
     long long h;
     cin >> n >> h;
-
     vector<long long> bags(n);
-    for (int i = 0; i < n; i++) cin >> bags[i];
-
-    long long left = 1; 
-    long long right = *max_element(bags.begin(), bags.end()); 
-
-    while (left < right) {
-        long long mid = left + (right - left) / 2;
-
-        if (canFinish(bags, h, mid)) right = mid;
-        else left = mid + 1; 
+    long long right = 0;
+    for (long long& x : bags) {
+        cin >> x;
+        if (x > right) right = x;
     }
-    cout << left << '\n'; 
-    return 0;
+    long long left = 1;
+    while (left < right) {
+        long long mid = (left + right) / 2;
+        if (canFinish(bags, h, mid)) right = mid;
+        else left = mid + 1;
+    }
+    cout << left << '\n';
 }
