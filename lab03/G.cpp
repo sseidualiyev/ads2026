@@ -11,27 +11,19 @@ int main() {
     int n;
     long long k;
     cin >> n >> k;
-
     vector<double> ropes(n);
     double right = 0;
-    
-    for (int i = 0; i < n; i++) {
-        cin >> ropes[i];
-        if (ropes[i] > right) right = ropes[i];
+    for (double& x : ropes) {
+        cin >> x;
+        if (x > right) right = x;
     }
-
     double left = 0;
-
     for (int i = 0; i < 100; i++) {
-        double mid = left + (right - left) / 2.0;
-
+        double mid = (left + right) / 2;
         long long pieces = 0;
-        for (double rope : ropes) pieces += (long long)(rope / mid);
-
+        for (double x : ropes) pieces += (long long)(x / mid);
         if (pieces >= k) left = mid;
         else right = mid;
     }
-
     cout << fixed << setprecision(9) << left << '\n';
-    return 0;
 }
