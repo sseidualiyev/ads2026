@@ -31,31 +31,30 @@ Output
 using namespace std;
 
 int findb(const vector<int>& lines, int target) {
-    int left = 0, right = lines.size() - 1;
+    int l = 0, r = lines.size() - 1;
 
-    while (left < right) {
-        int mid = (right + left) / 2;
+    while (l < r) {
+        int m = (r + l) / 2;
 
-        if (lines[mid] >= target) right = mid;
-        else left = mid + 1;
+        if (lines[m] >= target) r = m;
+        else l = m + 1;
     }
-    return left + 1; 
+    return l + 1; 
 }
 
 int main() {
     int n, m;
-    cin >> n;
+    cin >> n >> m;
 
     vector<int> lines(n);
-    int currentSum = 0;
+    int currsum = 0;
     
     for (int i = 0; i < n; i++) {
         int size;
         cin >> size;
-        currentSum += size;
-        lines[i] = currentSum;
+        currsum += size;
+        lines[i] = currsum;
     }
-    cin >> m;
     for (int i = 0; i < m; i++) {
         int query;
         cin >> query;
