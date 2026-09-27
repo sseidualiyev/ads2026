@@ -30,17 +30,15 @@ Output
 #include <vector>
 using namespace std;
 
-int findBucket(const vector<int>& prefixsums, int target) {
-    int left = 0;
-    int right = prefixsums.size() - 1;
+int findb(const vector<int>& lines, int target) {
+    int left = 0, right = lines.size() - 1;
 
     while (left < right) {
-        int mid = left + (right - left) / 2;
+        int mid = (right + left) / 2;
 
-        if (prefixSums[mid] >= target) right = mid;
+        if (lines[mid] >= target) right = mid;
         else left = mid + 1;
     }
-    
     return left + 1; 
 }
 
@@ -48,21 +46,20 @@ int main() {
     int n, m;
     cin >> n;
 
-    vector<int> prefixSums(n);
+    vector<int> lines(n);
     int currentSum = 0;
     
     for (int i = 0; i < n; i++) {
         int size;
         cin >> size;
         currentSum += size;
-        prefixSums[i] = currentSum;
+        lines[i] = currentSum;
     }
-
     cin >> m;
     for (int i = 0; i < m; i++) {
         int query;
         cin >> query;
-        cout << findBucket(prefixSums, query) << "\n";
+        cout << findb(lines, query) << "\n";
         }
     return 0;
 }
