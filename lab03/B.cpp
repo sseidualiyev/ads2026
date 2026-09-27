@@ -25,36 +25,38 @@ Output
 #include <algorithm>
 using namespace std;
 
-int countRange(const vector<int>& a, int l, int r) {
-    if (l > r) return 0;
-
-    auto start = lower_bound(a.begin(), a.end(), l);
-    auto end = upper_bound(a.begin(), a.end(), r);
-
-    return end - start; 
+int lower(const vector<int>& a, int x) {
+    int l = 0, r = a.size();
+    while (l < r) {
+        int m = (l + r) / 2;
+        if (a[m] < x) l = m + 1;
+        else r = m;
+    }
+    return l;
 }
-
+int upper(const vector<int>& a, int x) {
+    int l = 0, r = a.size();
+    while (l < r) {
+        int m = (l + r) / 2;
+        if (a[m] <= x) l = m + 1;
+        else r = m;
+    }
+    return l;
+}
+int countRange(const vector<int>& a, int l, int r) {
+    return l > r ? 0 : upper(a, r) - lower(a, l);
+}
 int main() {
     int n, q;
     cin >> n >> q;
-
     vector<int> a(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int& x : a) cin >> x;
     sort(a.begin(), a.end());
-
     while (q--) {
         int l1, r1, l2, r2;
         cin >> l1 >> r1 >> l2 >> r2;
-
-        int total = countRange(a, l1, r1) + countRange(a, l2, r2);
-
-        int overlapLeft = max(l1, l2);
-        int overlapRight = min(r1, r2);
-
-        total -= countRange(a, overlapLeft, overlapRight);
-        
-        cout << total << "\n";
+        int ans = countRange(a, l1, r1) + countRange(a, l2, r2);
+        ans -= countRange(a, max(l1, l2), min(r1, r2));
+        cout << ans << '\n';
     }
-
-    return 0;
 }
