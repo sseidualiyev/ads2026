@@ -37,23 +37,23 @@ Output
 using namespace std;
 
 int main() {
-    int n, k;
-    cin >> n >> k;
-    priority_queue<long long, vector<long long>, greater<long long>> q;
+    int q, k;
+    cin >> q >> k;
+    priority_queue<long long, vector<long long>, greater<long long>> qq;
     long long sum = 0;
-    while (n--) {
+    while (q--) {
         string s;
         cin >> s;
         if (s == "insert") {
             long long x;
             cin >> x;
-            if (q.size() < k) {
-                q.push(x);
+            if (qq.size() < k) {
+                qq.push(x);
                 sum += x;
-            } else if (x > q.top()) {
-                sum += x - q.top();
-                q.pop();
-                q.push(x);
+            } else if (x > qq.top()) {
+                sum += x - qq.top();
+                qq.pop();
+                qq.push(x);
             }
         } else {
             cout << sum << '\n';
