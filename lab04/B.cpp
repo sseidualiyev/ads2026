@@ -31,7 +31,7 @@ Node* find(Node* root, int x) {
     return 0;
 }
 
-int size(Node* t) {
+int size(Node* root) {
     if (!root) return 0;
     return 1 + size(root->l) + size(root->r);
 }
