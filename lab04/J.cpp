@@ -1,68 +1,52 @@
 /*
-Problem J: BST and Inorder traversal. Find the K-th smallest element in sorted array.
+Problem J: K-th element in Binary Search Tree
+BST and Inorder traversal. Find the K-th smallest element in sorted array.
+Input
+7 3
+20 8 22 4 12 10 14
+Output
+10
+Input
+7 5
+20 8 22 4 12 10 14
+Output
+14
 */
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 using namespace std;
 
 struct Node {
-    int val;
-    Node* left;
-    Node* right;
-
-    Node(int value) {
-        val = value;
-        left = nullptr;
-        right = nullptr;
-    }
+    int v; Node *l, *r;
+    Node(int x) : v(x), l(0), r(0) {}
 };
 
-Node* insert(Node* root, int value) {
-    if (root == nullptr) return new Node(value);
-
-    if (value < root->val) root->left = insert(root->left, value);
-    else root->right = insert(root->right, value);
-
+Node* insert(Node* root, int x) {
+    if (!root) return new Node(x);
+    if (x < root->v) root->l = insert(root->l, x);
+    else root->r = insert(root->r, x);
     return root;
 }
 
-void kthSmallest(Node* root, int k, int& count, int& answer) {
-    if (root == nullptr) return;
-    // Visit smaller values first
-    kthSmallest(root->left, k, count, answer);
-    // Visit current node
-    count++;
-    if (count == k) {
-        answer = root->val;
+void kth(Node* root, int k, int& cnt, int& ans) {
+    if (!root) return;
+    kth(root->l, k, cnt, ans);
+    if (++cnt == k) {
+        ans = root->v;
         return;
     }
-    // Visit larger values
-    kthSmallest(root->right, k, count, answer);
+    kth(root->r, k, cnt, ans);
 }
 
 int main() {
-    int n, k;
-    cin >> n >> k;
-
-    if (k > n) {
-        cout << -1 << '\n';
-        return 0;
-    }
-
-    Node* root = nullptr;
-
-    for (int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
+    int n, k; cin >> n >> k;
+    if (k > n) { cout << -1; return 0; }
+    Node* root = 0;
+    while (n--) {
+        int x; cin >> x;
         root = insert(root, x);
     }
-
-    int count = 0;
-    int answer = -1;
-
-    kthSmallest(root, k, count, answer);
-
-    cout << answer << '\n';
-
-    return 0;
+    int cnt = 0, ans = -1;
+    kth(root, k, cnt, ans);
+    cout << ans;
 }
