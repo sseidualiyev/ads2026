@@ -1,13 +1,18 @@
 /*
 Problem A: Mountains Binary Search Tree
-1. What the problem is asking
 First, we build the BST from the given numbers in the exact order.
-For the example:
+Input
+9 4
 7 10 12 8 5 6 2 1 4
-Because equal values go to the left, insertion works like:
-smaller → left
-greater → right
-equal → left
+LLL
+LRR
+RL
+RR
+Output
+YES
+NO
+YES
+YES
 */
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
@@ -15,66 +20,32 @@ equal → left
 using namespace std;
 
 struct Node {
-    int val;
-    Node* left;
-    Node* right;
-
-    Node(int value) : val(value), left(nullptr), right(nullptr) {}
+    int v; Node *l, *r;
+    Node(int x) : v(x), l(0), r(0) {}
 };
 
-void insert(Node*& root, int value) {
-    if (root == nullptr) {
-        root = new Node(value);
-        return;
-    }
-
-    Node* current = root;
-    
-    while (true) {
-        if (value <= current->val) { 
-            if (current->left == nullptr) {
-                current->left = new Node(value);
-                break; 
-            }
-            current = current->left;
-            
-        } else {                     
-            if (current->right == nullptr) {
-                current->right = new Node(value);
-                break;
-            }
-            current = current->right;
-        }
-    }
+void insert(Node*& root, int x) {
+    if (!root) { root = new Node(x); return; }
+    if (x <= root->v) insert(root->l, x);
+    else insert(root->r, x);
 }
 
-bool checkPath(Node* root, const string& path) {
-    Node* current = root;
-
-    for (char direction : path) {
-        if (current == nullptr) return false;
-        if (direction == 'L') current = current->left;
-        else if (direction == 'R') current = current->right;
+bool path(Node* root, string s) {
+    for (char c : s) {
+        if (!root) return false;
+        root = c == 'L' ? root->l : root->r;
     }
-    return current != nullptr;
+    return root != nullptr;
 }
 
 int main() {
-    int n, m;
-    cin >> n >> m; 
+    int n, m; cin >> n >> m;
+    Node* root = 0;
 
-    Node* root = nullptr;
+    while (n--) { int x; cin >> x; insert(root, x); }
 
-    for (int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
-        insert(root, x);
+    while (m--) {
+        string s; cin >> s;
+        cout << (path(root, s) ? "YES\n" : "NO\n");
     }
-    for (int i = 0; i < m; i++) {
-        string path;
-        cin >> path;
-        if (checkPath(root, path)) cout << "YES\n";
-        else cout << "NO\n";
-    }
-    return 0;
 }
