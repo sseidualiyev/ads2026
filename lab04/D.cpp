@@ -1,110 +1,57 @@
 /*
-Problem D: BST level/depth Level-Order Traversal BFS
+Problem D: Aureole
+BST level/depth Level-Order Traversal BFS
+Input
+1
+1
+Output
+1
+1
+Input
+5
+4 3 5 1 2
+Output
+4
+4 8 1 2
 */
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 #include <queue>
-#include <vector>
-
 using namespace std;
-// 1. NODE STRUCTURE
+
 struct Node {
-    int val;
-    Node* left;
-    Node* right;
-
-    Node(int value) {
-        val = value;
-        left = nullptr;
-        right = nullptr;
-    }
+    int v; Node *l, *r;
+    Node(int x) : v(x), l(0), r(0) {}
 };
-// 2. OPTIMIZED INSERT (Iterative)
-void insert(Node*& root, int value) {
-    if (root == nullptr) {
-        root = new Node(value);
-        return;
-    }
 
-    Node* current = root;
-    // Walk down to find the correct empty leaf position
-    while (true) {
-        if (value < current->val) {
-            if (current->left == nullptr) {
-                current->left = new Node(value);
-                break; 
-            }
-            current = current->left;
-        } else {
-            if (current->right == nullptr) {
-                current->right = new Node(value);
-                break;
-            }
-            current = current->right;
-        }
-    }
+void insert(Node*& root, int x) {
+    if (!root) { root = new Node(x); return; }
+    if (x < root->v) insert(root->l, x);
+    else insert(root->r, x);
 }
 
 int main() {
-    int n;
-    cin >> n;
+    int n; cin >> n;
+    Node* root = 0;
 
-    Node* root = nullptr;
-
-    // Phase 1: Build the tree
-    for (int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
+    while (n--) {
+        int x; cin >> x;
         insert(root, x);
     }
 
-    // Edge case: If the tree is completely empty
-    if (root == nullptr) {
-        cout << 0 << "\n";
-        return 0;
-    }
-
-    // Phase 2: BFS (Level-Order Traversal)
     queue<Node*> q;
-    q.push(root);
+    if (root) q.push(root);
 
-    vector<long long> sums;
-
-    // Process the tree level by level
     while (!q.empty()) {
-        // Snapshot the number of nodes currently in the queue
-        // This exact number is the size of the CURRENT level
-        int levelSize = q.size();
-        long long levelSum = 0; // Use long long to prevent overflow
+        int k = q.size();
+        long long sum = 0;
 
-        // Only loop exactly 'levelSize' times to process just this level
-        for (int i = 0; i < levelSize; i++) {
-            Node* current = q.front();
-            q.pop();
-
-            levelSum += current->val; // Accumulate the sum for this level
-
-            // Add the NEXT level's children to the back of the queue
-            if (current->left != nullptr) {
-                q.push(current->left);
-            }
-            if (current->right != nullptr) {
-                q.push(current->right);
-            }
+        while (k--) {
+            Node* t = q.front(); q.pop();
+            sum += t->v;
+            if (t->l) q.push(t->l);
+            if (t->r) q.push(t->r);
         }
-
-        // Store the completed level sum
-        sums.push_back(levelSum);
-    }
-
-    // Phase 3: Print Results
-    // The number of elements in the vector is exactly the number of levels
-    cout << sums.size() << '\n';
-
-    for (long long sum : sums) {
         cout << sum << ' ';
     }
-    cout << '\n';
-
-    return 0;
 }
