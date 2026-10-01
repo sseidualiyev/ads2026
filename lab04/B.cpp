@@ -25,7 +25,7 @@ void insert(Node*& root, int x) {
 
 Node* find(Node* root, int x) {
     while (root) {
-        if (root->v == x) return t;
+        if (root->v == x) return root;
         root = x < root->v ? root->l : root->r;
     }
     return 0;
