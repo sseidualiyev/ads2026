@@ -1,99 +1,52 @@
 /*
-Problem C: find node and print subtree nodes
+Problem C: Christmas Gifts
+find node and print subtree nodes
+Input
+5
+4 2 7 1 3
+2
+Output
+2 1 3 
 */
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 using namespace std;
 
 struct Node {
-    int val;
-    Node* left;
-    Node* right;
-
-    Node(int value) {
-        val = value;
-        left = nullptr;
-        right = nullptr;
-    }
+    int v; Node *l, *r;
+    Node(int x) : v(x), l(0), r(0) {}
 };
 
-// 2. OPTIMIZED INSERT (Iterative)
-void insert(Node*& root, int value) {
-    // Base Case: First element becomes the root
-    if (root == nullptr) {
-        root = new Node(value);
-        return;
-    }
-    Node* current = root;
-    // Walk down the tree to find the correct empty leaf
-    while (true) {
-        if (value < current->val) {
-            // RULE 1: Strictly smaller values go LEFT
-            if (current->left == nullptr) {
-                current->left = new Node(value);
-                break; 
-            }
-            current = current->left;           
-        } else {
-            // RULE 2: Greater or equal values go RIGHT
-            if (current->right == nullptr) {
-                current->right = new Node(value);
-                break;
-            }
-            current = current->right;
-        }
-    }
+void insert(Node*& root, int x) {
+    if (!root) { root = new Node(x); return; }
+    if (x < root->v) insert(root->l, x);
+    else insert(root->r, x);
 }
 
-// 3. OPTIMIZED FIND (Iterative)
 Node* find(Node* root, int x) {
-    Node* current = root;
-
-    // Traverse downwards like a standard binary search
-    while (current != nullptr) {
-        if (current->val == x) return current;     // Target found!
-        else if (x < current->val) current = current->left;  // Search left
-        else current = current->right; // Search right
+    while (root) {
+        if (root->v == x) return root;
+        root = x < root->v ? root->l : root->r;
     }
-    return nullptr; // Dead end, value does not exist
+    return 0;
 }
 
-// 4. PREORDER TRAVERSAL (NLR: Node, Left, Right)
 void preorder(Node* root) {
-    if (root == nullptr) {
-        return;
-    }
-    // Step 1: Process the current NODE
-    cout << root->val << " ";
-    // Step 2: Recursively traverse the LEFT branch
-    preorder(root->left);
-    // Step 3: Recursively traverse the RIGHT branch
-    preorder(root->right);
+    if (!root) return;
+    cout << root->v << ' ';
+    preorder(root->l);
+    preorder(root->r);
 }
 
 int main() {
-    int n;
-    cin >> n;
+    int n; cin >> n;
+    Node* root = 0;
 
-    Node* root = nullptr;
-
-    // Phase 1: Build the tree
-    for (int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
+    while (n--) {
+        int x; cin >> x;
         insert(root, x);
     }
 
-    // Phase 2: Find the target subtree
-    int target;
-    cin >> target;
-    Node* targetNode = find(root, target);
-
-    // Phase 3: Print the preorder traversal starting from the target
-    // Note: Always safe-guard against printing from a null pointer
-    if (targetNode != nullptr) {
-        preorder(targetNode);
-        cout << "\n";
-    }
-    return 0;
+    int x; cin >> x;
+    if (Node* root = find(root, x)) preorder(root);
 }
