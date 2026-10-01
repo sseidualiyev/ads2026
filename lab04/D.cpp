@@ -17,6 +17,7 @@ Output
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 #include <queue>
+#include <vector>
 using namespace std;
 
 struct Node {
@@ -41,6 +42,7 @@ int main() {
 
     queue<Node*> q;
     if (root) q.push(root);
+    vector<long long> sums;
 
     while (!q.empty()) {
         int k = q.size();
@@ -52,6 +54,8 @@ int main() {
             if (t->l) q.push(t->l);
             if (t->r) q.push(t->r);
         }
-        cout << sum << ' ';
+        sums.push_back(sum);
     }
+    cout << sums.size() << '\n';
+    for(long long s : sums) cout << s << ' ';
 }
