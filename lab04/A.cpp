@@ -19,11 +19,7 @@ struct Node {
     Node* left;
     Node* right;
 
-    Node(int value) {
-        val = value;
-        left = nullptr;
-        right = nullptr;
-    }
+    Node(int value) : val(value), left(nullptr), right(nullptr) {}
 };
 
 void insert(Node*& root, int value) {
