@@ -1,62 +1,51 @@
 /*
-Problem E: given BST, find vertices on each level and find maximum. USE BFS and queue.
+Problem E: Width
+given BST, find vertices on each level and find maximum. USE BFS and queue.
+6
+1 2 1
+1 3 0
+3 5 0
+3 6 1
+2 4 1
+Output
+3
+Input
+4
+1 2 0
+2 3 0
+2 4 1
+Output
+2
 */
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 #include <vector>
 #include <queue>
-
 using namespace std;
 
 int main() {
-    int n;
-    cin >> n;
+    int n; cin >> n;
+    vector<int> l(n+1), r(n+1);
 
-    vector<int> left(n + 1, 0);
-    vector<int> right(n + 1, 0);
-
-    // Build the tree
-    for (int i = 0; i < n - 1; i++) {
-        int parent, child, side;
-        cin >> parent >> child >> side;
-
-        if (side == 0) {
-            left[parent] = child;
-        } else {
-            right[parent] = child;
-        }
+    for (int i=0; i<n-1; i++) {
+        int p,c,s; cin >> p >> c >> s;
+        if (s) r[p] = c;
+        else l[p] = c;
     }
 
-    queue<int> q;
-    q.push(1);
-
-    int maxWidth = 0;
+    queue<int> q; q.push(1);
+    int ans = 0;
 
     while (!q.empty()) {
-        // Number of vertices on the current level
-        int levelSize = q.size();
+        int k = q.size();
+        if (k > ans) ans = k;
 
-        // Update maximum width
-        if (levelSize > maxWidth) {
-            maxWidth = levelSize;
-        }
-
-        // Process the current level
-        for (int i = 0; i < levelSize; i++) {
-            int current = q.front();
-            q.pop();
-
-            if (left[current] != 0) {
-                q.push(left[current]);
-            }
-
-            if (right[current] != 0) {
-                q.push(right[current]);
-            }
+        while (k--) {
+            int v = q.front(); q.pop();
+            if (l[v]) q.push(l[v]);
+            if (r[v]) q.push(r[v]);
         }
     }
 
-    cout << maxWidth << '\n';
-
-    return 0;
+    cout << ans;
 }
