@@ -48,5 +48,5 @@ int main() {
     }
 
     int x; cin >> x;
-    if (Node* root = find(root, x)) preorder(root);
+    if (Node* t = find(root, x)) preorder(t);
 }
