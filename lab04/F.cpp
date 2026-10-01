@@ -1,68 +1,49 @@
 /*
-Problem F: Triangle search binary tree. Need to find the smallest triangle (node with both children )
+Problem F: Triangle search binary tree. 
+Need to find the smallest triangle (node with both children )
+Input
+3
+2 3 1
+Output
+1
+Input
+3
+1 2 3
+Output
+0
+Input
+16
+13 9 3 7 6 16 1 11 12 10 4 2 14 5 8 15
+Output
+5
 */
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 using namespace std;
 
 struct Node {
-    int val;
-    Node* left;
-    Node* right;
-
-    Node(int value) {
-        val = value;
-        left = nullptr;
-        right = nullptr;
-    }
+    int v; Node *l, *r;
+    Node(int x) : v(x), l(0), r(0) {}
 };
 
-Node* insert(Node* root, int value) {
-    if (root == nullptr) {
-        return new Node(value);
-    }
-
-    if (value < root->val) {
-        root->left = insert(root->left, value);
-    } else {
-        root->right = insert(root->right, value);
-    }
-
+Node* insert(Node* root, int x) {
+    if (!root) return new Node(x);
+    if (x < root->v) root->l = insert(root->l, x);
+    else root->r = insert(root->r, x);
     return root;
 }
 
-void countTriangles(Node* root, int& answer) {
-    if (root == nullptr) {
-        return;
-    }
-
-    // Current node has both children
-    if (root->left != nullptr && root->right != nullptr) {
-        answer++;
-    }
-
-    countTriangles(root->left, answer);
-    countTriangles(root->right, answer);
+int count(Node* root) {
+    if (!root) return 0;
+    return (root->l && root->r) + count(root->l) + count(root->r);
 }
 
 int main() {
-    int n;
-    cin >> n;
-
-    Node* root = nullptr;
-
-    for (int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
-
+    int n; cin >> n;
+    Node* root = 0;
+    while (n--) {
+        int x; cin >> x;
         root = insert(root, x);
     }
-
-    int answer = 0;
-
-    countTriangles(root, answer);
-
-    cout << answer << '\n';
-
-    return 0;
+    cout << count(root);
 }
