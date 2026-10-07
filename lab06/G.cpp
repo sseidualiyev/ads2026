@@ -27,44 +27,42 @@ Sens3i Danya
 #include <map>
 using namespace std;
 
-struct User {
+struct user {
     string first, last;
 };
-bool less(User a, User b) {
+bool les(user a, user b) {
     return a.first < b.first;
 }
-void quick(vector<User>& a, int l, int r) {
+void quick(vector<user>& a, int l, int r) {
     int i = l, j = r;
-    User p = a[(l + r) / 2];
-
-    while (i <= j) {
-        while (less(a[i], p)) i++;
-        while (less(p, a[j])) j--;
-        if (i <= j) swap(a[i++], a[j--]);
+    user p = a[(l + r) / 2];
+    while(i <= j) {
+        while(les(a[i], p)) i++;
+        while(les(p, a[j])) j--;
+        if(i <= j) swap(a[i++], a[j--]);
     }
-
-    if (l < j) quick(a, l, j);
-    if (i < r) quick(a, i, r);
+    if(l < j) quick(a, l, j);
+    if(i < r) quick(a, i, r);
 }
-
 int main() {
     int n; cin >> n;
-    map<string, string> mp;
-    map<string, bool> used;
-
-    for (int i = 0; i < n; i++) {
+    map<string, string> curr;
+    map<string, string> og;
+    for(int i = 0; i < n; i++) {
         string old, now; cin >> old >> now;
-        mp[old] = now;
-        used[now] = true;
-    }
-    vector<User> ans;
-    for (auto [old, now] : mp) {
-        if (!used[old]) {
-            while (mp.count(now)) now = mp[now];
-            ans.push_back({old, now});
+        if(og.count(old)) {
+            string orig = og[old];
+            curr[orig] = now;
+            og.erase(old);
+            og[now] = orig; 
+        } else {
+            curr[old] = now;
+            og[now] = old;
         }
     }
+    vector<user> ans;
+    for(auto& [old, now] : curr) ans.push_back({old, now});
     quick(ans, 0, ans.size() - 1);
     cout << ans.size() << '\n';
-    for (auto x : ans) cout << x.first << ' ' << x.last << '\n';
+    for(auto x : ans) cout << x.first << ' ' << x.last << '\n';
 }
