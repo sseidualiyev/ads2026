@@ -19,62 +19,52 @@ Kadyrov Asman 4.000
 #include <iomanip>
 using namespace std;
 
-struct Student {
-    string last, first;
-    double gpa;
+struct S {
+    string f, l;
+    double g;
 };
 double grade(string s) {
-    if (s == "A+") return 4;
-    if (s == "A")  return 3.75;
-    if (s == "B+") return 3.5;
-    if (s == "B")  return 3;
-    if (s == "C+") return 2.5;
-    if (s == "C")  return 2;
-    if (s == "D+") return 1.5;
-    if (s == "D")  return 1;
+    if(s=="A+") return 4;
+    if(s=="A") return 3.75;
+    if(s=="B+") return 3.5;
+    if(s=="B") return 3;
+    if(s=="C+") return 2.5;
+    if(s=="C") return 2;
+    if(s=="D+") return 1.5;
+    if(s=="D") return 1;
     return 0;
 }
-bool less(Student a, Student b) {
-    if (a.gpa != b.gpa) return a.gpa < b.gpa;
-    if (a.last != b.last) return a.last < b.last;
-    return a.first < b.first;
+bool les(const S& a, const S& b) {
+    if(a.g != b.g) return a.g < b.g;
+    if(a.l != b.l) return a.l < b.l;
+    return a.f < b.f;
 }
-void quick(vector<Student>& a, int l, int r) {
-    int i = l, j = r;
-    Student p = a[(l + r) / 2];
-  
-    while (i <= j) {
-        while (less(a[i], p)) i++;
-        while (less(p, a[j])) j--;
-        if (i <= j) swap(a[i++], a[j--]);
-    }
-  
-    if (l < j) quick(a, l, j);
-    if (i < r) quick(a, i, r);
+void heapify(vector<S>& a, int n, int i) {
+    int m=i, l=2*i+1, r=2*i+2;
+    if(l<n && les(a[m],a[l])) m=l;
+    if(r<n && les(a[m],a[r])) m=r;
+    if(m!=i) {swap(a[i],a[m]); heapify(a,n,m);}
 }
-
+void heapSort(vector<S>& a) {
+    int n=a.size();
+    for(int i=n/2-1;i>=0;i--) heapify(a,n,i);
+    for(int i=n-1;i>0;i--) {swap(a[0],a[i]); heapify(a,i,0);}
+}
 int main() {
-    int n; cin >> n;
-    vector<Student> a(n);
-
-    for (auto& s : a) {
-        int k;
-        cin >> s.last >> s.first >> k;
-
-        double sum = 0, credits = 0;
-
-        for (int i = 0; i < k; i++) {
-            string mark;
-            double c;
-            cin >> mark >> c;
-
-            sum += grade(mark) * c;
-            credits += c;
+    int n; cin>>n;
+    vector<S> a(n);
+    for(auto& s:a) {
+        int k; cin>> s.l >> s.f >> k;
+        double sum=0, csum=0;
+        while(k--) {
+            string mark; double c;
+            cin >> mark >>c;
+            sum+=grade(mark)*c;
+            csum+=c;
         }
-        s.gpa = sum / credits;
+        s.g=sum/csum;
     }
-    quick(a, 0, n - 1);
-    cout << fixed << setprecision(3);
-    for (auto s : a)
-        cout << s.last << ' ' << s.first << ' ' << s.gpa << '\n';
+    heapSort(a);
+    cout<<fixed<<setprecision(3);
+    for(auto s:a) cout<<s.l<<' '<<s.f<<' '<<s.g<<'\n';
 }
