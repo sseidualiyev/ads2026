@@ -20,19 +20,19 @@ Kadyrov Asman 4.000
 using namespace std;
 
 struct S {
-    string f, l;
+    string l, f;
     double g;
 };
-double grade(string s) {
-    if(s=="A+") return 4;
-    if(s=="A") return 3.75;
-    if(s=="B+") return 3.5;
-    if(s=="B") return 3;
-    if(s=="C+") return 2.5;
-    if(s=="C") return 2;
-    if(s=="D+") return 1.5;
-    if(s=="D") return 1;
-    return 0;
+double grade(const string& s) {
+    if(s == "A+") return 4;
+    if(s == "A") return 3.75;
+    if(s == "B+") return 3.5;
+    if(s == "B") return 3;
+    if(s == "C+") return 2.5;
+    if(s == "C") return 2;
+    if(s == "D+") return 1.5;
+    if(s == "D") return 1;
+    else return 0;
 }
 bool les(const S& a, const S& b) {
     if(a.g != b.g) return a.g < b.g;
@@ -40,31 +40,31 @@ bool les(const S& a, const S& b) {
     return a.f < b.f;
 }
 void heapify(vector<S>& a, int n, int i) {
-    int m=i, l=2*i+1, r=2*i+2;
-    if(l<n && les(a[m],a[l])) m=l;
-    if(r<n && les(a[m],a[r])) m=r;
-    if(m!=i) {swap(a[i],a[m]); heapify(a,n,m);}
+    int m = i, l = 2*i+1, r = 2*i+2;
+    if(l<n && les(a[m], a[l])) m = l;
+    if(r<n && les(a[m], a[r])) m = r;
+    if(m != i) {swap(a[i], a[m]); heapify(a, n, m);}
 }
-void heapSort(vector<S>& a) {
-    int n=a.size();
-    for(int i=n/2-1;i>=0;i--) heapify(a,n,i);
-    for(int i=n-1;i>0;i--) {swap(a[0],a[i]); heapify(a,i,0);}
+void heapsort(vector<S>& a) {
+    int n = a.size();
+    for(int i = n/2 - 1; i >= 0; i--) heapify(a, n, i);
+    for(int i = n-1; i > 0; i--) {swap(a[0], a[i]); heapify(a, i, 0);}
 }
 int main() {
-    int n; cin>>n;
+    int n; cin >> n;
     vector<S> a(n);
-    for(auto& s:a) {
-        int k; cin>> s.l >> s.f >> k;
-        double sum=0, csum=0;
+    for(auto& s : a) {
+        int k; cin >> s.l >> s.f >> k;
+        double sum = 0, csum = 0;
         while(k--) {
             string mark; double c;
-            cin >> mark >>c;
-            sum+=grade(mark)*c;
-            csum+=c;
+            cin >> mark >> c;
+            sum += grade(mark) * c;
+            csum += c;
         }
-        s.g=sum/csum;
+        s.g = sum / csum;
     }
-    heapSort(a);
-    cout<<fixed<<setprecision(3);
-    for(auto s:a) cout<<s.l<<' '<<s.f<<' '<<s.g<<'\n';
+    heapsort(a);
+    cout << fixed << setprecision(3);
+    for(const auto& s : a) cout << s.l << ' ' << s.f << ' ' << s.g << '\n';
 }
