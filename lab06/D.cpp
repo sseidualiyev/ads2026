@@ -38,4 +38,5 @@ int main() {
         x.x = x.y * 10000 + x.m * 100 + x.d;
     }
     quick(a, 0, n-1);
-    
+    for(auto x : a) printf("%02d-%02d-%04d\n", x.d, x.m, x.y); 
+}
