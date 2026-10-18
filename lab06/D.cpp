@@ -22,7 +22,7 @@ void quick(vector<Date>& a, int l, int r) {
     while(i <= j) {
         while(a[i].x < p) i++;
         while(a[j].x > p) j--;
-        if(i <= j) swap(a[i++], a[j--);
+        if(i <= j) swap(a[i++], a[j--]);
     }
     if(l < j) quick(a, l, j);
     if(i < r) quick(a, i, r);
