@@ -13,39 +13,30 @@ Hash of string "3383080447314675044643313" is 425675346
 Hash of string "9839" is 13903
 Hash of string "3461762860035486" is 813695185
 */
-#include <iostream>
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <iostream>
 using namespace std;
 
 const long long mod = 1000000007LL;
 string hashing(const string& s) {
     long long h = 0, p = 1;
     for(char c : s) {
-        h = (h + ((c - 47) * p) % mod) % mod;
-        p = (p * 11) % mod;
+        h = (h + (c - 47) * p) % mod;
+        p = p * 11 % mod;
     }
     return to_string(h);
 }
 int main() {
     int n; cin >> n;
-    vector<string> v;
+    vector<string> a(2*n);
     unordered_map<string, int> mp;
-    v.reserve(2*n); mp.reserve(4*n);
-    for(int i = 0; i < 2*n; i++) {
-        string s; cin >> s;
-        v.push_back(s);
-        mp[s]++;
-    }
+    for(int i = 0; i < 2*n; i++) {cin >> a[i]; mp[a[i]]++;}
     int cnt = 0;
-    for(int i = 0; i < v.size(); i++) {
-        if(cnt == n) break;
-        string hs = hashing(v[i]);
-        if(mp.count(hs)) {
-            cout << "Hash of string \"" << v[i] << "\" is " << hs << '\n';
-            cnt++; 
-        }
+    for(int i = 0; i < 2*n && cnt < n; i++) {
+        string hs = hashing(a[i]);
+        if(mp.count(hs))
+            {cout << "Hash of string \"" << a[i] << "\" is " << hs << '\n'; cnt++;}
     }
-    return 0;
 }
